@@ -1,19 +1,11 @@
 'use client';
+import { type AddEditModalProps } from '@/features/types';
+
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 import clsx from 'clsx';
 import styles from '@/components/addEditModal.module.scss';
-
-interface AddEditModalProps {
-  onModalHandler: () => void;
-  project: {
-    id?: string;
-    title?: string;
-    client?: string;
-    date?: string;
-  } | null;
-}
 
 export default function AddEditModal({
   onModalHandler,
@@ -26,12 +18,11 @@ export default function AddEditModal({
     // クライアントサイドでDOM要素を取得
     setModalRoot(document.getElementById('add-edit-modal'));
   }, []);
+  const [state, formAction] = useActionState(action, { errors: null });
 
   if (!modalRoot) {
     return null; // ターゲットがない場合は何も描画しない
   }
-
-  useFormState;
 
   return createPortal(
     <>
