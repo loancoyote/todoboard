@@ -1,0 +1,44 @@
+.circle {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  width: 10rem;
+  height: 10rem;
+  background-color: #0b9fed;
+  border-radius: 50%;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.16);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+
+  cursor: pointer;
+  &__close {
+    background-color: #ed620b;
+    transform: rotate(45deg);
+  }
+  &__bar {
+    width: 8rem;
+    height: 8rem;
+    &--v {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(90deg);
+      display: inline-block;
+      width: 6rem;
+      height: 0.2rem;
+      background-color: #fff;
+    }
+    &--h {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      width: 6rem;
+      height: 0.2rem;
+      background-color: #fff;
+    }
+  }
+}

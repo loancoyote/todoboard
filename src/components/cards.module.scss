@@ -1,0 +1,38 @@
+.l-card {
+  padding: 2rem 0;
+  width: inherit;
+  background-color: #fff;
+  border-radius: 1rem;
+  height: 80rem;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
+  &__list {
+    width: 42rem;
+
+    &--ttl {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  }
+}
+
+.s-card {
+  width: 90%;
+  padding: 1rem 2rem;
+  margin: 0 auto;
+  border: 1px solid #a2a2a2;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.16);
+  border-radius: 0.5rem;
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
+  }
+  &__ttl {
+    font-size: 2rem;
+  }
+  &__client {
+    font-size: 1.5rem;
+  }
+  &__date {
+    font-size: 1.5rem;
+  }
+}
