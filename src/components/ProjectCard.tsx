@@ -1,14 +1,5 @@
+import { type ProjectCardProps } from '@/features/types';
 import styles from '@/components/cards.module.scss';
-
-interface ProjectCardProps {
-  projects: {
-    id: string;
-    title: string;
-    client: string;
-    date: string;
-  }[];
-  onClick: (id: string, title: string, client: string, date: string) => void;
-}
 
 export default function ProjectCard({ projects, onClick }: ProjectCardProps) {
   return (

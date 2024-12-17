@@ -1,10 +1,6 @@
+import { type AddEditButtonProps } from '@/features/types';
 import styles from '@/components/button.module.scss';
 import clsx from 'clsx';
-
-interface AddEditButtonProps {
-  modal: boolean;
-  onModalHandler: () => void;
-}
 
 export default function AddEditButton({
   modal,

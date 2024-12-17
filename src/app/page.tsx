@@ -1,5 +1,6 @@
 'use client';
 
+import { type Project } from '@/features/types';
 import styles from '@/app/home.module.scss';
 import { boards } from '@/backend/data';
 import AddEditButton from '@/components/AddEditButton';
@@ -10,12 +11,7 @@ import { useState } from 'react';
 export default function Home() {
   const [modal, setModal] = useState(false);
   // 各案件カードの状態を管理（各カードをクリックした時に必要）
-  const [selectedProject, setSelectedProject] = useState<{
-    id?: string;
-    title?: string;
-    client?: string;
-    date?: string;
-  } | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   function showModal(
     id?: string,
