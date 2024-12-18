@@ -19,6 +19,14 @@ export interface AddEditModalProps {
     date?: string;
   } | null;
 }
+export interface FormProps {
+  project: {
+    id?: string;
+    title?: string;
+    client?: string;
+    date?: string;
+  } | null;
+}
 
 export interface BoardProps {
   board: {

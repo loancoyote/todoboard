@@ -38,7 +38,7 @@ export default function Home() {
         modal={modal}
       />
       {modal && (
-        <AddEditModal onModalHandler={showModal} project={selectedProject} />
+        <AddEditModal onModalHandler={closeModal} project={selectedProject} />
       )}
     </div>
   );
