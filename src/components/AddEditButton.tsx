@@ -11,7 +11,9 @@ export default function AddEditButton({
       className={
         modal ? clsx(styles['circle__close'], styles.circle) : styles.circle
       }
-      onClick={onModalHandler}
+      onClick={() => {
+        onModalHandler();
+      }}
     >
       <div className={styles['circle__bar']}>
         <span className={styles['circle__bar--v']}></span>

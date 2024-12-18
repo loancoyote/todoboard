@@ -13,13 +13,13 @@ export default function Home() {
   // 各案件カードの状態を管理（各カードをクリックした時に必要）
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  function showModal(
-    id?: string,
-    title?: string,
-    client?: string,
-    date?: string
-  ) {
-    setSelectedProject({ id, title, client, date });
+  function showModal(project?: Project) {
+    if (project) {
+      const { id, title, detail, client, date } = project;
+      setSelectedProject({ id, title, detail, client, date });
+    } else {
+      setSelectedProject(null); // 引数がない場合はリセット
+    }
     setModal(true);
   }
 
@@ -38,7 +38,7 @@ export default function Home() {
         modal={modal}
       />
       {modal && (
-        <AddEditModal onModalHandler={showModal} project={selectedProject} />
+        <AddEditModal onModalHandler={closeModal} project={selectedProject} />
       )}
     </div>
   );

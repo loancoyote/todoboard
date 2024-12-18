@@ -1,6 +1,7 @@
 export interface Project {
   id?: string;
   title?: string;
+  detail?: string;
   client?: string;
   date?: string;
 }
@@ -15,9 +16,21 @@ export interface AddEditModalProps {
   project: {
     id?: string;
     title?: string;
+    detail?: string;
     client?: string;
     date?: string;
   } | null;
+}
+export interface FormProps {
+  project: {
+    id?: string;
+    title?: string;
+    detail?: string;
+    client?: string;
+    date?: string;
+  } | null;
+  onSubmit: () => void;
+  flag: 'new' | 'edit';
 }
 
 export interface BoardProps {
@@ -27,19 +40,27 @@ export interface BoardProps {
     items?: {
       id: string;
       title: string;
+      detail: string;
       client: string;
       date: string;
     }[];
   };
-  onModalHandler: () => void; //途中経由させている関数の型指定は引数は指定不要
+  onModalHandler: ({ id, title, detail, client, date }: Project) => void;
 }
 
 export interface ProjectCardProps {
   projects: {
     id: string;
     title: string;
+    detail: string;
     client: string;
     date: string;
   }[];
-  onClick: (id: string, title: string, client: string, date: string) => void;
+  onClick: (
+    id: string,
+    title: string,
+    detail: string,
+    client: string,
+    date: string
+  ) => void;
 }
