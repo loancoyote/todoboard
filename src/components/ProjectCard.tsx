@@ -9,7 +9,13 @@ export default function ProjectCard({ projects, onClick }: ProjectCardProps) {
           key={project.id}
           className={styles['s-card']}
           onClick={() =>
-            onClick(project.id, project.title, project.client, project.date)
+            onClick(
+              project.id,
+              project.title,
+              project.detail,
+              project.client,
+              project.date
+            )
           }
         >
           <h3 className={styles['s-card__ttl']}>{project.title}</h3>

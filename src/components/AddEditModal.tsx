@@ -30,7 +30,7 @@ export default function AddEditModal({
         <h3 className={styles['addEditModal__ttl']}>
           {project?.title ? '案件編集' : '新規追加'}
         </h3>
-        <Form project={project} />
+        <Form project={project} onSubmit={onModalHandler} />
       </div>
       <div
         className={styles['addEditModal__backdrop']}
