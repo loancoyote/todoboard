@@ -30,6 +30,7 @@ export interface FormProps {
     date?: string;
   } | null;
   onSubmit: () => void;
+  flag: 'new' | 'edit';
 }
 
 export interface BoardProps {

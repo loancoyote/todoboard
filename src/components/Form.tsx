@@ -1,3 +1,5 @@
+'use client';
+import { boards } from '@/backend/data';
 import styles from '@/components/form.module.scss';
 import { type FormProps } from '@/features/types';
 import { isNotEmpty } from '@/lib/validation';
@@ -5,21 +7,19 @@ import clsx from 'clsx';
 import { useActionState } from 'react';
 
 interface ActionStateType {
-  enteredValues: { [key: string]: string };
+  enteredValues?: { [key: string]: string };
   errors: string[] | null;
 }
 
-export default function Form({ project, onSubmit }: FormProps) {
+export default function Form({ project, onSubmit, flag }: FormProps) {
   async function createProject(
     prevFormState: ActionStateType,
     formData: FormData
   ): Promise<ActionStateType> {
-    console.log(prevFormState);
     const title = formData.get('title') as string;
     const detail = formData.get('detail') as string;
     const date = formData.get('date') as string;
     const client = formData.get('client') as string;
-    console.log(title, detail, date, client);
 
     const errors = [];
 
@@ -32,6 +32,7 @@ export default function Form({ project, onSubmit }: FormProps) {
     }
 
     // 保存ボタンを押した後、エラーがある場合は入力した情報は残す
+
     if (errors.length > 0) {
       return {
         enteredValues: {
@@ -44,17 +45,46 @@ export default function Form({ project, onSubmit }: FormProps) {
       };
     }
 
-    // エラーがなければモーダルを閉じる。
+    // 新しい案件の追加
+    if (flag == 'new') {
+      // 追加ボタンから案件を追加する場合は全て「Projects」ボード内に格納される
+      const projectsBoard = boards.find((board) => board.name === 'Project');
+
+      if (!projectsBoard) {
+        throw new Error('Projects boardが見つかりません');
+      }
+
+      projectsBoard.items?.push({
+        id: title,
+        title: title,
+        detail: detail,
+        client: client,
+        date: date,
+      });
+    }
+
+    // 既存案件の編集
+    if (flag == 'edit') {
+      const targetProjectId = project!.id;
+
+      const allProjects = boards.flatMap((board) => board.items);
+      const targetProject = allProjects.find(
+        (project) => project!.id === targetProjectId
+      );
+
+      if (targetProject) {
+        targetProject.title = title;
+        targetProject.detail = detail;
+        targetProject.client = client;
+        targetProject.date = date;
+      }
+    }
+
+    // 変更・追加が終わればモーダルを閉じる。
     onSubmit();
 
     // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
     return {
-      enteredValues: {
-        title,
-        detail,
-        date,
-        client,
-      },
       errors: null,
     };
   }
@@ -124,7 +154,13 @@ export default function Form({ project, onSubmit }: FormProps) {
           </button>
         </div>
       </form>
-      {formState.errors && <p>error</p>}
+      {formState.errors && (
+        <ul>
+          {formState.errors.map((error) => (
+            <li key={error}>{error}</li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
