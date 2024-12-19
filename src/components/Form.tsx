@@ -16,78 +16,114 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
     prevFormState: ActionStateType,
     formData: FormData
   ): Promise<ActionStateType> {
-    const title = formData.get('title') as string;
-    const detail = formData.get('detail') as string;
-    const date = formData.get('date') as string;
-    const client = formData.get('client') as string;
+    const action = formData.get('action');
 
-    const errors = [];
+    // 保存ボタンを押下
+    if (action === 'save') {
+      const title = formData.get('title') as string;
+      const detail = formData.get('detail') as string;
+      const date = formData.get('date') as string;
+      const client = formData.get('client') as string;
 
-    // 必須項目の案件名と期日でバリデーション
-    if (!isNotEmpty(title)) {
-      errors.push('案件名は必須項目です');
-    }
-    if (!isNotEmpty(date)) {
-      errors.push('期日は必須項目です');
-    }
+      const errors = [];
 
-    // 保存ボタンを押した後、エラーがある場合は入力した情報は残す
+      // 必須項目の案件名と期日でバリデーション
+      if (!isNotEmpty(title)) {
+        errors.push('案件名は必須項目です');
+      }
+      if (!isNotEmpty(date)) {
+        errors.push('期日は必須項目です');
+      }
 
-    if (errors.length > 0) {
+      // 保存ボタンを押した後、エラーがある場合は入力した情報は残す
+
+      if (errors.length > 0) {
+        return {
+          enteredValues: {
+            title,
+            detail,
+            date,
+            client,
+          },
+          errors: errors,
+        };
+      }
+
+      // 新しい案件の追加
+      if (flag == 'new') {
+        // 追加ボタンから案件を追加する場合は全て「Projects」ボード内に格納される
+        const projectsBoard = boards.find((board) => board.name === 'Project');
+
+        if (!projectsBoard) {
+          throw new Error('Projects boardが見つかりません');
+        }
+
+        projectsBoard.items?.push({
+          id: title,
+          title: title,
+          detail: detail,
+          client: client,
+          date: date,
+        });
+      }
+
+      // 既存案件の編集
+      if (flag == 'edit') {
+        const targetProjectId = project!.id;
+
+        const allProjects = boards.flatMap((board) => board.items);
+        const targetProject = allProjects.find(
+          (project) => project!.id === targetProjectId
+        );
+
+        if (targetProject) {
+          targetProject.title = title;
+          targetProject.detail = detail;
+          targetProject.client = client;
+          targetProject.date = date;
+        }
+      }
+
+      // 変更・追加が終わればモーダルを閉じる。
+      onSubmit();
+
+      // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
       return {
-        enteredValues: {
-          title,
-          detail,
-          date,
-          client,
-        },
-        errors: errors,
+        errors: null,
       };
     }
 
-    // 新しい案件の追加
-    if (flag == 'new') {
-      // 追加ボタンから案件を追加する場合は全て「Projects」ボード内に格納される
-      const projectsBoard = boards.find((board) => board.name === 'Project');
-
-      if (!projectsBoard) {
-        throw new Error('Projects boardが見つかりません');
-      }
-
-      projectsBoard.items?.push({
-        id: title,
-        title: title,
-        detail: detail,
-        client: client,
-        date: date,
-      });
+    // 戻るボタンを押下
+    if (action === 'cancel') {
+      // 中止処理
+      onSubmit(); // モーダルを閉じる
+      return {
+        errors: null,
+      };
     }
 
-    // 既存案件の編集
-    if (flag == 'edit') {
+    // 削除ボタンを押下
+    if (action === 'delete') {
       const targetProjectId = project!.id;
 
       const allProjects = boards.flatMap((board) => board.items);
-      const targetProject = allProjects.find(
-        (project) => project!.id === targetProjectId
+      console.log(allProjects);
+
+      const filteredProject = allProjects.filter(
+        (project) => project?.id !== targetProjectId
       );
 
-      if (targetProject) {
-        targetProject.title = title;
-        targetProject.detail = detail;
-        targetProject.client = client;
-        targetProject.date = date;
-      }
+      console.log(filteredProject);
+
+      onSubmit(); // モーダルを閉じる
+      return {
+        errors: null,
+      };
     }
 
-    // 変更・追加が終わればモーダルを閉じる。
-    onSubmit();
-
-    // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
-    return {
-      errors: null,
-    };
+    return prevFormState;
   }
+
   const [formState, formAction] = useActionState(createProject, {
     enteredValues: {
       title: project?.title || '',
@@ -137,6 +173,9 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
         </div>
         <div className={styles['form__buttons']}>
           <button
+            type="submit"
+            name="action"
+            value="save"
             className={clsx(
               styles['form__button'],
               styles['form__button--save']
@@ -145,6 +184,9 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
             保存
           </button>
           <button
+            type="submit"
+            name="action"
+            value={project?.title ? 'delete' : 'cancel'}
             className={clsx(
               styles['form__button'],
               styles['form__button--notsave']
