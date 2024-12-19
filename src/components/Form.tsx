@@ -87,7 +87,7 @@ export default function Form({ project, flag }: FormProps) {
       }
 
       // 変更・追加が終わればモーダルを閉じる。
-      projectCtx.closeModal();
+ projectCtx.closeModal();
 
       // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
       return {
@@ -98,8 +98,7 @@ export default function Form({ project, flag }: FormProps) {
     // 戻るボタンを押下
     if (action === 'cancel') {
       // 中止処理
-      projectCtx.closeModal();
-      // モーダルを閉じる
+projectCtx.closeModal();
       return {
         errors: null,
       };
@@ -118,8 +117,7 @@ export default function Form({ project, flag }: FormProps) {
 
       console.log(filteredProject);
 
-      projectCtx.closeModal();
-      // モーダルを閉じる
+projectCtx.closeModal();
       return {
         errors: null,
       };
