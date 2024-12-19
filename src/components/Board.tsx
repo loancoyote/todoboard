@@ -2,20 +2,23 @@ import { type BoardProps } from '@/features/types';
 
 import styles from '@/components/cards.module.scss';
 import ProjectCard from './ProjectCard';
+import { useContext } from 'react';
+import { ProjectContext } from '@/store/project-context';
 
-export default function Board({ board, onModalHandler }: BoardProps) {
+export default function Board({ board }: BoardProps) {
+  const projectCtx = useContext(ProjectContext);
+  console.log(projectCtx.projects);
+  const filteredProject = projectCtx.projects.filter(
+    (project) => project.status === board.name
+  );
+
   return (
     <div className={styles['l-card__list']}>
       <h2 className={styles['l-card__list--ttl']}>{board.name}</h2>
       <div className={styles['l-card']}>
-        {board.items && (
+        {filteredProject && (
           <ul>
-            <ProjectCard
-              projects={board.items}
-              onClick={(id, title, detail, client, date) =>
-                onModalHandler({ id, title, detail, client, date })
-              }
-            />
+            <ProjectCard projects={filteredProject} />
           </ul>
         )}
       </div>
