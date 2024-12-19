@@ -8,11 +8,9 @@ export interface Project {
 
 export interface AddEditButtonProps {
   modal: boolean;
-  onModalHandler: () => void;
 }
 
 export interface AddEditModalProps {
-  onModalHandler: () => void;
   project: {
     id?: string;
     title?: string;
@@ -29,7 +27,6 @@ export interface FormProps {
     client?: string;
     date?: string;
   } | null;
-  onSubmit: () => void;
   flag: 'new' | 'edit';
 }
 
@@ -37,15 +34,7 @@ export interface BoardProps {
   board: {
     id: string;
     name: string;
-    items?: {
-      id: string;
-      title: string;
-      detail: string;
-      client: string;
-      date: string;
-    }[];
   };
-  onModalHandler: ({ id, title, detail, client, date }: Project) => void;
 }
 
 export interface ProjectCardProps {
@@ -55,12 +44,15 @@ export interface ProjectCardProps {
     detail: string;
     client: string;
     date: string;
+    status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
   }[];
-  onClick: (
-    id: string,
-    title: string,
-    detail: string,
-    client: string,
-    date: string
-  ) => void;
+}
+
+export interface ProjectsData {
+  id: string;
+  title: string;
+  detail: string;
+  client: string;
+  date: string;
+  status: string;
 }

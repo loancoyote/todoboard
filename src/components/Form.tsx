@@ -3,15 +3,17 @@ import { boards } from '@/backend/data';
 import styles from '@/components/form.module.scss';
 import { type FormProps } from '@/features/types';
 import { isNotEmpty } from '@/lib/validation';
+import { ProjectContext } from '@/store/project-context';
 import clsx from 'clsx';
-import { useActionState } from 'react';
+import { useActionState, useContext } from 'react';
 
 interface ActionStateType {
   enteredValues?: { [key: string]: string };
   errors: string[] | null;
 }
 
-export default function Form({ project, onSubmit, flag }: FormProps) {
+export default function Form({ project, flag }: FormProps) {
+  const projectCtx = useContext(ProjectContext);
   async function createProject(
     prevFormState: ActionStateType,
     formData: FormData
@@ -85,7 +87,7 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
       }
 
       // 変更・追加が終わればモーダルを閉じる。
-      onSubmit();
+ projectCtx.closeModal();
 
       // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
       return {
@@ -96,7 +98,7 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
     // 戻るボタンを押下
     if (action === 'cancel') {
       // 中止処理
-      onSubmit(); // モーダルを閉じる
+projectCtx.closeModal();
       return {
         errors: null,
       };
@@ -115,7 +117,7 @@ export default function Form({ project, onSubmit, flag }: FormProps) {
 
       console.log(filteredProject);
 
-      onSubmit(); // モーダルを閉じる
+projectCtx.closeModal();
       return {
         errors: null,
       };
