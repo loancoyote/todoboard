@@ -1,7 +1,7 @@
 'use client';
 
 import styles from '@/app/home.module.scss';
-import { boardsData } from '@/backend/data';
+import { boardsData } from '../backend/data';
 import AddEditButton from '@/components/AddEditButton';
 import AddEditModal from '@/components/AddEditModal';
 import Board from '@/components/Board';

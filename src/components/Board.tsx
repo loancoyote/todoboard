@@ -7,8 +7,7 @@ import { ProjectContext } from '@/store/project-context';
 
 export default function Board({ board }: BoardProps) {
   const projectCtx = useContext(ProjectContext);
-  console.log(projectCtx.projects);
-  const filteredProject = projectCtx.projects.filter(
+  const filteredProject = [...projectCtx.projects].filter(
     (project) => project.status === board.name
   );
 
