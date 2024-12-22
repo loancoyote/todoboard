@@ -1,140 +1,28 @@
 'use client';
-import { boards } from '@/backend/data';
 import styles from '@/components/form.module.scss';
-import { type FormProps } from '@/features/types';
-import { isNotEmpty } from '@/lib/validation';
 import { ProjectContext } from '@/store/project-context';
 import clsx from 'clsx';
 import { useActionState, useContext } from 'react';
 
-interface ActionStateType {
+export interface ActionStateType {
   enteredValues?: { [key: string]: string };
   errors: string[] | null;
 }
 
-export default function Form({ project, flag }: FormProps) {
+export default function Form() {
   const projectCtx = useContext(ProjectContext);
-  async function createProject(
-    prevFormState: ActionStateType,
-    formData: FormData
-  ): Promise<ActionStateType> {
-    const action = formData.get('action');
+  console.log('hi');
 
-    // 保存ボタンを押下
-    if (action === 'save') {
-      const title = formData.get('title') as string;
-      const detail = formData.get('detail') as string;
-      const date = formData.get('date') as string;
-      const client = formData.get('client') as string;
-
-      const errors = [];
-
-      // 必須項目の案件名と期日でバリデーション
-      if (!isNotEmpty(title)) {
-        errors.push('案件名は必須項目です');
-      }
-      if (!isNotEmpty(date)) {
-        errors.push('期日は必須項目です');
-      }
-
-      // 保存ボタンを押した後、エラーがある場合は入力した情報は残す
-
-      if (errors.length > 0) {
-        return {
-          enteredValues: {
-            title,
-            detail,
-            date,
-            client,
-          },
-          errors: errors,
-        };
-      }
-
-      // 新しい案件の追加
-      if (flag == 'new') {
-        // 追加ボタンから案件を追加する場合は全て「Projects」ボード内に格納される
-        const projectsBoard = boards.find((board) => board.name === 'Project');
-
-        if (!projectsBoard) {
-          throw new Error('Projects boardが見つかりません');
-        }
-
-        projectsBoard.items?.push({
-          id: title,
-          title: title,
-          detail: detail,
-          client: client,
-          date: date,
-        });
-      }
-
-      // 既存案件の編集
-      if (flag == 'edit') {
-        const targetProjectId = project!.id;
-
-        const allProjects = boards.flatMap((board) => board.items);
-        const targetProject = allProjects.find(
-          (project) => project!.id === targetProjectId
-        );
-
-        if (targetProject) {
-          targetProject.title = title;
-          targetProject.detail = detail;
-          targetProject.client = client;
-          targetProject.date = date;
-        }
-      }
-
-      // 変更・追加が終わればモーダルを閉じる。
-      projectCtx.closeModal();
-
-      // 保存ボタンを押した後、エラーがない場合は入力した情報は消す。残す意味はないから。
-      return {
-        errors: null,
-      };
-    }
-
-    // 戻るボタンを押下
-    if (action === 'cancel') {
-      // 中止処理
-      projectCtx.closeModal();
-      return {
-        errors: null,
-      };
-    }
-
-    // 削除ボタンを押下
-    if (action === 'delete') {
-      const targetProjectId = project!.id;
-
-      const allProjects = boards.flatMap((board) => board.items);
-      console.log(allProjects);
-
-      const filteredProject = allProjects.filter(
-        (project) => project?.id !== targetProjectId
-      );
-
-      console.log(filteredProject);
-
-      projectCtx.closeModal();
-      return {
-        errors: null,
-      };
-    }
-
-    return prevFormState;
-  }
-
-  const [formState, formAction] = useActionState(createProject, {
+  const [formState, formAction] = useActionState(projectCtx.createProject, {
     enteredValues: {
-      title: project?.title || '',
-      detail: project?.detail || '',
-      date: project?.date || '',
-      client: project?.client || '',
+      title: projectCtx.selectedProject?.title || '',
+      detail: projectCtx.selectedProject?.detail || '',
+      date: projectCtx.selectedProject?.date || '',
+      client: projectCtx.selectedProject?.client || '',
     },
     errors: null,
   });
+
   return (
     <>
       <form className={styles['form']} action={formAction}>
@@ -188,13 +76,13 @@ export default function Form({ project, flag }: FormProps) {
           <button
             type="submit"
             name="action"
-            value={project?.title ? 'delete' : 'cancel'}
+            value={projectCtx.selectedProject?.title ? 'delete' : 'cancel'}
             className={clsx(
               styles['form__button'],
               styles['form__button--notsave']
             )}
           >
-            {project?.title ? '削除' : '戻る'}
+            {projectCtx.selectedProject?.title ? '削除' : '戻る'}
           </button>
         </div>
       </form>

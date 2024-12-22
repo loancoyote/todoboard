@@ -19,16 +19,16 @@ export interface AddEditModalProps {
     date?: string;
   } | null;
 }
-export interface FormProps {
-  project: {
-    id?: string;
-    title?: string;
-    detail?: string;
-    client?: string;
-    date?: string;
-  } | null;
-  flag: 'new' | 'edit';
-}
+// export interface FormProps {
+// project: {
+//   id?: string;
+//   title?: string;
+//   detail?: string;
+//   client?: string;
+//   date?: string;
+// } | null;
+// flag: 'new' | 'edit';
+// }
 
 export interface BoardProps {
   board: {
@@ -56,3 +56,5 @@ export interface ProjectsData {
   date: string;
   status: string;
 }
+
+export type Flag = 'new' | 'edit';
