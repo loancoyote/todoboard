@@ -125,10 +125,10 @@ export default function ProjectContextProvider({
     prevFormState: ActionStateType,
     formData: FormData
   ): Promise<ActionStateType> {
-    const action = formData.get('action');
+    const mode = formData.get('action');
 
     // 保存ボタンを押下
-    if (action === 'save') {
+    if (mode === 'save') {
       const title = formData.get('title') as string;
       const detail = formData.get('detail') as string;
       const date = formData.get('date') as string;
@@ -189,7 +189,7 @@ export default function ProjectContextProvider({
     }
 
     // 戻るボタンを押下
-    if (action === 'cancel') {
+    if (mode === 'cancel') {
       projectDispatch({
         type: 'CANCEL',
         payload: {
@@ -199,7 +199,7 @@ export default function ProjectContextProvider({
     }
 
     // 削除ボタンを押下
-    if (action === 'delete') {
+    if (mode === 'delete') {
       projectDispatch({
         type: 'DELETE',
         payload: {
