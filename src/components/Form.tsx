@@ -4,14 +4,8 @@ import { ProjectContext } from '@/store/project-context';
 import clsx from 'clsx';
 import { useActionState, useContext } from 'react';
 
-export interface ActionStateType {
-  enteredValues?: { [key: string]: string };
-  errors: string[] | null;
-}
-
 export default function Form() {
   const projectCtx = useContext(ProjectContext);
-  console.log('hi');
 
   const [formState, formAction] = useActionState(projectCtx.createProject, {
     enteredValues: {

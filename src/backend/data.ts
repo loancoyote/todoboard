@@ -1,4 +1,4 @@
-import { ProjectItem } from '@/store/project-context';
+import { ProjectItem } from '@/features/types';
 
 export const boardsData = [
   { id: 'b1', name: 'PROJECTS' },

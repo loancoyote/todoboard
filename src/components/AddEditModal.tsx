@@ -22,7 +22,7 @@ export default function AddEditModal({ project }: AddEditModalProps) {
     <>
       <div className={styles.addEditModal}>
         <h3 className={styles['addEditModal__ttl']}>
-          {project?.title ? '案件編集' : '新規追加'}
+          {project ? '案件編集' : '新規追加'}
         </h3>
         <Form />
       </div>
