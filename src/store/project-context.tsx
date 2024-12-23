@@ -1,45 +1,15 @@
 import { boardsData, projectData } from '@/backend/data';
-import { ActionStateType } from '@/components/Form';
-import { Flag } from '@/features/types';
+import {
+  Action,
+  ActionStateType,
+  Flag,
+  ProjectContextProviderProps,
+  ProjectFixed,
+  ProjectItem,
+  ProjectItemData,
+} from '@/features/types';
 import { isNotEmpty } from '@/lib/validation';
-import { createContext, ReactNode, useState, useReducer } from 'react';
-
-export interface Boards {
-  id: string;
-  name: string;
-}
-export interface ProjectItem {
-  id: string;
-  title: string;
-  detail: string;
-  date: string;
-  client: string;
-  status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
-}
-export interface AddedProjectItem {
-  title: string;
-  detail: string;
-  date: string;
-  client: string;
-}
-
-export interface ProjectItemTest {
-  projects: ProjectItem[];
-}
-
-export interface ProjectFixed {
-  boards: Boards[];
-  projects: ProjectItem[];
-  modal: boolean;
-  selectedProject: ProjectItem | null;
-  flag: Flag;
-  showModal: (project?: ProjectItem) => void;
-  closeModal: () => void;
-  createProject: (
-    prevFormState: ActionStateType,
-    formData: FormData
-  ) => Promise<ActionStateType>;
-}
+import { createContext, useState, useReducer } from 'react';
 
 export const ProjectContext = createContext<ProjectFixed>({
   boards: [],
@@ -55,45 +25,10 @@ export const ProjectContext = createContext<ProjectFixed>({
   }),
 });
 
-interface ProjectContextProviderProps {
-  children: ReactNode;
-}
-
-type AddAction = {
-  type: 'ADD';
-  payload: {
-    enteredValues: AddedProjectItem;
-  };
-};
-type EditlAction = {
-  type: 'EDIT';
-  payload: {
-    selectedProject: ProjectItem;
-    projects: ProjectItem[];
-    enteredValues: AddedProjectItem;
-  };
-};
-type CancelAction = {
-  type: 'CANCEL';
-  payload: {
-    closeModal: () => void;
-  };
-};
-type DeleteProjectAction = {
-  type: 'DELETE';
-  payload: {
-    projects: ProjectItem[];
-    selectedProject: ProjectItem | null;
-    closeModal: () => void;
-  };
-};
-
-type Action = AddAction | EditlAction | CancelAction | DeleteProjectAction;
-
 function projectReducer(
-  state: ProjectItemTest,
+  state: ProjectItemData,
   action: Action
-): ProjectItemTest {
+): ProjectItemData {
   console.log('DIspatch');
   if (action.type === 'ADD') {
     const updatedProjects: ProjectItem[] = [
