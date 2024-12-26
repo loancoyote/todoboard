@@ -15,10 +15,14 @@ export const ProjectContext = createContext<ProjectFixed>({
   boards: [],
   projects: [],
   modal: false,
+  alertModal: false,
   selectedProject: null,
   flag: 'new',
   showModal: () => {},
+  showAlertModal: () => {},
+  closeAlertModal: () => {},
   closeModal: () => {},
+  confirmDelete: () => {},
   createProject: async () => ({
     enteredValues: {},
     errors: null,
@@ -29,7 +33,7 @@ function projectReducer(
   state: ProjectItemData,
   action: Action
 ): ProjectItemData {
-  console.log('DIspatch');
+  console.log('Dispatch');
   if (action.type === 'ADD') {
     const updatedProjects: ProjectItem[] = [
       ...state.projects,
@@ -78,15 +82,25 @@ function projectReducer(
 
   if (action.type === 'DELETE') {
     const existingProjects = [...state.projects];
+    // 削除はshowAlertModal()内で行うのでとりあえず元の案件を返す。
+    action.payload.showAlertModal();
+    return { projects: existingProjects };
+  }
+
+  if (action.type === 'CONFIRM-DELETE') {
+    const existingProjects = [...state.projects];
     const targetProjectId = action.payload.selectedProject!.id;
+
     const filteredProject = existingProjects.filter(
       (project) => project?.id !== targetProjectId
     );
 
     action.payload.closeModal();
+    action.payload.closeAlertModal();
 
     return { projects: filteredProject };
   }
+
   return state;
 }
 
@@ -99,6 +113,7 @@ export default function ProjectContextProvider({
 
   const [flag, setFlag] = useState<Flag>('new');
   const [modal, setModal] = useState(false);
+  const [alertModal, setAlertModal] = useState(false);
   // 各案件カードの状態を管理（各カードをクリックした時に必要）
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
     null
@@ -121,19 +136,38 @@ export default function ProjectContextProvider({
     setModal(false);
   }
 
+  function showAlertModal() {
+    setAlertModal(true);
+  }
+  function closeAlertModal() {
+    setAlertModal(false);
+  }
+
+  function confirmDelete() {
+    projectDispatch({
+      type: 'CONFIRM-DELETE',
+      payload: {
+        projects: projectState.projects,
+        selectedProject: selectedProject!,
+        closeModal: closeModal,
+        closeAlertModal,
+      },
+    });
+  }
+
   async function createProject(
     prevFormState: ActionStateType,
     formData: FormData
   ): Promise<ActionStateType> {
-    const action = formData.get('action');
+    const mode = formData.get('action');
+
+    const title = formData.get('title') as string;
+    const detail = formData.get('detail') as string;
+    const date = formData.get('date') as string;
+    const client = formData.get('client') as string;
 
     // 保存ボタンを押下
-    if (action === 'save') {
-      const title = formData.get('title') as string;
-      const detail = formData.get('detail') as string;
-      const date = formData.get('date') as string;
-      const client = formData.get('client') as string;
-
+    if (mode === 'save') {
       const errors = [];
 
       // 必須項目の案件名と期日でバリデーション
@@ -189,23 +223,26 @@ export default function ProjectContextProvider({
     }
 
     // 戻るボタンを押下
-    if (action === 'cancel') {
+    if (mode === 'cancel') {
       projectDispatch({
         type: 'CANCEL',
         payload: {
+          enteredValues: { title, detail, date, client },
           closeModal: closeModal,
         },
       });
     }
 
     // 削除ボタンを押下
-    if (action === 'delete') {
+    if (mode === 'delete') {
       projectDispatch({
         type: 'DELETE',
         payload: {
           projects: projectState.projects,
-          selectedProject: selectedProject,
+          selectedProject: selectedProject!,
+          enteredValues: { title, detail, date, client },
           closeModal: closeModal,
+          showAlertModal: showAlertModal,
         },
       });
     }
@@ -217,10 +254,14 @@ export default function ProjectContextProvider({
     boards: boardsData,
     projects: projectState.projects,
     modal,
+    alertModal,
     selectedProject,
     flag,
     showModal,
+    showAlertModal,
+    closeAlertModal,
     closeModal,
+    confirmDelete,
     createProject,
   };
   return (

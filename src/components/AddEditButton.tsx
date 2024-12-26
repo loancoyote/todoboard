@@ -1,22 +1,14 @@
-import { type AddEditButtonProps } from '@/features/types';
 import styles from '@/components/button.module.scss';
-import clsx from 'clsx';
 import { useContext } from 'react';
 import { ProjectContext } from '@/store/project-context';
 
-export default function AddEditButton({ modal }: AddEditButtonProps) {
+export default function AddEditButton() {
   const projectCtx = useContext(ProjectContext);
   return (
     <div
-      className={
-        modal ? clsx(styles['circle__close'], styles.circle) : styles.circle
-      }
+      className={styles.circle}
       onClick={() => {
-        if (modal) {
-          projectCtx.closeModal();
-        } else {
-          projectCtx.showModal();
-        }
+        projectCtx.showModal();
       }}
     >
       <div className={styles['circle__bar']}>

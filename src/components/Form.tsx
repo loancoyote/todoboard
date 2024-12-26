@@ -55,7 +55,13 @@ export default function Form() {
             name="client"
           />
         </div>
-        <div className={styles['form__buttons']}>
+        <div
+          className={
+            projectCtx.selectedProject
+              ? clsx(styles['form__buttons'], styles['edit'])
+              : clsx(styles['form__buttons'], styles['add'])
+          }
+        >
           <button
             type="submit"
             name="action"
@@ -67,16 +73,32 @@ export default function Form() {
           >
             保存
           </button>
+          {projectCtx.selectedProject ? (
+            <button
+              type="submit"
+              name="action"
+              value="delete"
+              className={clsx(
+                styles['form__button'],
+                styles['form__button--delete']
+              )}
+            >
+              削除
+            </button>
+          ) : (
+            ''
+          )}
+
           <button
             type="submit"
             name="action"
-            value={projectCtx.selectedProject?.title ? 'delete' : 'cancel'}
+            value="cancel"
             className={clsx(
               styles['form__button'],
-              styles['form__button--notsave']
+              styles['form__button--cancel']
             )}
           >
-            {projectCtx.selectedProject?.title ? '削除' : '戻る'}
+            戻る
           </button>
         </div>
       </form>

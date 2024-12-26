@@ -7,6 +7,7 @@ import AddEditModal from '@/components/AddEditModal';
 import Board from '@/components/Board';
 import { useContext } from 'react';
 import { ProjectContext } from '@/store/project-context';
+import AlertModal from '@/components/AlertModal';
 
 export default function Home() {
   const projectCtx = useContext(ProjectContext);
@@ -17,10 +18,11 @@ export default function Home() {
         <Board key={board.id} board={board} />
       ))}
 
-      <AddEditButton modal={projectCtx.modal} />
       {projectCtx.modal && (
         <AddEditModal project={projectCtx.selectedProject} />
       )}
+      {projectCtx.alertModal && <AlertModal />}
+      <AddEditButton />
     </div>
   );
 }

@@ -20,7 +20,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: #333;
   background: var(--background);
   font-family: 'Noto Sans JP', 'YuGothic', '游ゴシック体',
     'Hiragino Kaku Gothic ProN', 'Hiragino Sans', '游ゴシック Medium',
@@ -29,7 +29,6 @@ body {
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #333;
 }
 
 * {
