@@ -13,6 +13,7 @@ export default function Form() {
       detail: projectCtx.selectedProject?.detail || '',
       date: projectCtx.selectedProject?.date || '',
       client: projectCtx.selectedProject?.client || '',
+      status: projectCtx.selectedProject?.status || '',
     },
     errors: null,
   });
@@ -54,6 +55,23 @@ export default function Form() {
             defaultValue={formState.enteredValues?.client}
             name="client"
           />
+        </div>
+        <div className={styles['form__item']}>
+          <label htmlFor="status">ステータス</label>
+          <select
+            id="status"
+            defaultValue={formState.enteredValues?.status || ''}
+            name="status"
+          >
+            <option value="" disabled>
+              ステータスを選択してください
+            </option>
+            {projectCtx.boards.map((board) => (
+              <option key={board.id} value={board.name}>
+                {board.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div
           className={

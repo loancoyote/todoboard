@@ -9,9 +9,7 @@ export interface ProjectItem {
   status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
 }
 
-// export interface AddEditButtonProps {
-//   modal: boolean;
-// }
+export type ProjectStatus = 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
 
 export interface AddEditModalProps {
   project: {
@@ -58,6 +56,7 @@ export interface ActionStateType {
 export interface ProjectFixed {
   boards: Boards[];
   projects: ProjectItem[];
+  status: ProjectStatus[];
   modal: boolean;
   alertModal: boolean;
   selectedProject: ProjectItem | null;
@@ -83,6 +82,7 @@ export interface AddedProjectItem {
   detail: string;
   date: string;
   client: string;
+  status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
 }
 
 export type AddAction = {

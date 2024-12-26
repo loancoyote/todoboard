@@ -1,4 +1,4 @@
-import { boardsData, projectData } from '@/backend/data';
+import { boardsData, projectData, statusData } from '@/backend/data';
 import {
   Action,
   ActionStateType,
@@ -14,6 +14,7 @@ import { createContext, useState, useReducer } from 'react';
 export const ProjectContext = createContext<ProjectFixed>({
   boards: [],
   projects: [],
+  status: [],
   modal: false,
   alertModal: false,
   selectedProject: null,
@@ -44,7 +45,7 @@ function projectReducer(
         detail: action.payload.enteredValues.detail,
         client: action.payload.enteredValues.client,
         date: action.payload.enteredValues.date,
-        status: 'PROJECTS',
+        status: action.payload.enteredValues.status,
       },
     ];
     return {
@@ -65,6 +66,7 @@ function projectReducer(
         detail: action.payload.enteredValues.detail,
         client: action.payload.enteredValues.client,
         date: action.payload.enteredValues.date,
+        status: action.payload.enteredValues.status,
       };
       existingProjects[existingProjectIndex] = updatedProject;
     }
@@ -165,6 +167,11 @@ export default function ProjectContextProvider({
     const detail = formData.get('detail') as string;
     const date = formData.get('date') as string;
     const client = formData.get('client') as string;
+    const status = formData.get('status') as
+      | 'PROJECTS'
+      | 'PROCESSING'
+      | 'CHECKING'
+      | 'DONE';
 
     // 保存ボタンを押下
     if (mode === 'save') {
@@ -186,6 +193,7 @@ export default function ProjectContextProvider({
             detail,
             date,
             client,
+            status,
           },
           errors: errors,
         };
@@ -196,7 +204,7 @@ export default function ProjectContextProvider({
         projectDispatch({
           type: 'ADD',
           payload: {
-            enteredValues: { title, detail, date, client },
+            enteredValues: { title, detail, date, client, status },
           },
         });
       }
@@ -208,7 +216,7 @@ export default function ProjectContextProvider({
           payload: {
             selectedProject: selectedProject!,
             projects: projectState.projects,
-            enteredValues: { title, detail, date, client },
+            enteredValues: { title, detail, date, client, status },
           },
         });
       }
@@ -227,7 +235,7 @@ export default function ProjectContextProvider({
       projectDispatch({
         type: 'CANCEL',
         payload: {
-          enteredValues: { title, detail, date, client },
+          enteredValues: { title, detail, date, client, status },
           closeModal: closeModal,
         },
       });
@@ -240,7 +248,7 @@ export default function ProjectContextProvider({
         payload: {
           projects: projectState.projects,
           selectedProject: selectedProject!,
-          enteredValues: { title, detail, date, client },
+          enteredValues: { title, detail, date, client, status },
           closeModal: closeModal,
           showAlertModal: showAlertModal,
         },
@@ -253,6 +261,7 @@ export default function ProjectContextProvider({
   const ctxValue = {
     boards: boardsData,
     projects: projectState.projects,
+    status: statusData,
     modal,
     alertModal,
     selectedProject,
