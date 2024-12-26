@@ -13,6 +13,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body>
         <ProjectContextProvider>
           <div id="add-edit-modal"></div>
+          <div id="alert-modal"></div>
           {children}
         </ProjectContextProvider>
       </body>

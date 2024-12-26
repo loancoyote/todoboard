@@ -9,9 +9,9 @@ export interface ProjectItem {
   status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
 }
 
-export interface AddEditButtonProps {
-  modal: boolean;
-}
+// export interface AddEditButtonProps {
+//   modal: boolean;
+// }
 
 export interface AddEditModalProps {
   project: {
@@ -34,7 +34,7 @@ export interface ProjectCardProps {
   projects: ProjectItem[];
 }
 
-export type Flag = 'new' | 'edit';
+export type Flag = 'new' | 'edit' | 'cancel' | 'delete';
 
 export interface Boards {
   id: string;
@@ -59,10 +59,14 @@ export interface ProjectFixed {
   boards: Boards[];
   projects: ProjectItem[];
   modal: boolean;
+  alertModal: boolean;
   selectedProject: ProjectItem | null;
   flag: Flag;
   showModal: (project?: ProjectItem) => void;
   closeModal: () => void;
+  showAlertModal: () => void;
+  closeAlertModal: () => void;
+  confirmDelete: () => void;
   createProject: (
     prevFormState: ActionStateType,
     formData: FormData
@@ -98,15 +102,28 @@ export type EditlAction = {
 export type CancelAction = {
   type: 'CANCEL';
   payload: {
+    enteredValues: AddedProjectItem;
     closeModal: () => void;
   };
 };
 export type DeleteProjectAction = {
   type: 'DELETE';
   payload: {
+    selectedProject: ProjectItem;
     projects: ProjectItem[];
-    selectedProject: ProjectItem | null;
+    enteredValues: AddedProjectItem;
     closeModal: () => void;
+    showAlertModal: () => void;
+  };
+};
+
+export type confirmDelete = {
+  type: 'CONFIRM-DELETE';
+  payload: {
+    projects?: ProjectItem[];
+    selectedProject?: ProjectItem;
+    closeModal: () => void;
+    closeAlertModal: () => void;
   };
 };
 
@@ -114,4 +131,5 @@ export type Action =
   | AddAction
   | EditlAction
   | CancelAction
-  | DeleteProjectAction;
+  | DeleteProjectAction
+  | confirmDelete;

@@ -32,10 +32,15 @@
     position: absolute;
     bottom: 2rem;
     right: 3rem;
-    display: flex;
-    justify-content: space-between;
-    width: 15rem;
+    display: grid;
+    gap: 3rem;
     margin-left: auto;
+    &.add {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    &.edit {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   &__button {
     width: 6rem;
@@ -46,9 +51,13 @@
       border-color: #0b9fed;
       color: #0b9fed;
     }
-    &--notsave {
+    &--delete {
       border-color: #f80000;
       color: #f80000;
+    }
+    &--cancel {
+      border-color: #333;
+      color: #333;
     }
   }
 }
