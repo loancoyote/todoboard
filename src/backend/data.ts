@@ -1,10 +1,16 @@
-import { ProjectItem } from '@/features/types';
+import { ProjectItem, ProjectStatus } from '@/features/types';
 
 export const boardsData = [
   { id: 'b1', name: 'PROJECTS' },
   { id: 'b2', name: 'PROCESSING' },
   { id: 'b3', name: 'CHECKING' },
   { id: 'b4', name: 'DONE' },
+];
+export const statusData: ProjectStatus[] = [
+  'PROJECTS',
+  'PROCESSING',
+  'CHECKING',
+  'DONE',
 ];
 
 export const projectData: ProjectItem[] = [
