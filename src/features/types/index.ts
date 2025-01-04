@@ -29,7 +29,12 @@ export interface BoardProps {
 }
 
 export interface ProjectCardProps {
-  projects: ProjectItem[];
+  // projects: ProjectItem[];
+  key: string;
+  id: string;
+  title: string;
+  client: string;
+  date: string;
 }
 
 export type Flag = 'new' | 'edit' | 'cancel' | 'delete';
