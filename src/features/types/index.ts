@@ -4,8 +4,8 @@ export interface ProjectItem {
   id: string;
   title: string;
   detail: string;
-  date: string;
   client: string;
+  date: string;
   status: 'PROJECTS' | 'PROCESSING' | 'CHECKING' | 'DONE';
 }
 
@@ -26,6 +26,7 @@ export interface BoardProps {
     id: string;
     name: string;
   };
+  projects: ProjectItem[];
 }
 
 export interface ProjectCardProps {

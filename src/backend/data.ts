@@ -62,6 +62,14 @@ export const projectData: ProjectItem[] = [
     date: '2024/12/31',
     status: 'CHECKING',
   },
+  {
+    id: 'p7',
+    title: 'テスト7',
+    detail: 'ああああ',
+    client: 'honeymother',
+    date: '2024/12/31',
+    status: 'DONE',
+  },
 ];
 
 export const boards = [

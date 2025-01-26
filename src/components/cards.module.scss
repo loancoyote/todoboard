@@ -7,16 +7,18 @@
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.16);
   &__list {
     width: 42rem;
-
     &--ttl {
       font-size: 3rem;
       text-align: center;
       margin-bottom: 2rem;
     }
   }
+  &__on {
+    outline: 1px solid #f10909;
+  }
 }
 .s-card {
-  width: 90%;
+  width: 39rem;
   padding: 1rem 2rem;
   margin: 0 auto;
   border: 1px solid #a2a2a2;
